@@ -9,13 +9,16 @@ export const resetPasswordRoute = {
         const {newPassword} = req.body;
 
         const db = getDbConnection(process.env.DATABASE_NAME)
+        
+        const newSalt = uuid();
+        const pepper = process.env.PEPPER_STRING
 
-        const newPasswordHash = await bcrypt.hash(newPassword,10)
+        const newPasswordHash = await bcrypt.hash(newSalt+newPassword+pepper,10)
 
         const result = await db.collection('users').findOneAndUpdate({
             passwordResetCode
         },{
-            $set:{passwordHash:newPasswordHash},
+            $set:{passwordHash:newPasswordHash,salt:newSalt},
             $unset:{passwordResetCode:''}
         })
 
