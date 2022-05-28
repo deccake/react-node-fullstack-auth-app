@@ -5,13 +5,13 @@ export const VerficationMail = ({to,subject,html}) => {
     const OAuth2 = google.auth.OAuth2;
 
 const oauth2Client = new OAuth2({
-    clientId:'794773632289-81mo09710nccseo74lui6op0o0k33nn3.apps.googleusercontent.com',
-    clientSecret:'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',
-    redirectUri:'https://developers.google.com/oauthplayground'
+    clientId:process.env.CLIENT_ID,
+    clientSecret:process.env.CLIENT_SECRET,
+    redirectUri:process.env.REDIRECT_URI
 })
 
 oauth2Client.setCredentials({
-    refresh_token:'1//04TS9_b6k0HFoCgYIARAAGAQSNwF-L9IrxrA7BeiLBGjN89MXfdd4IrgT2z7BZnysx-Eu0H41H7CoifXWXjCW0pc0mAXGGMbmGvk'
+    refresh_token:process.env.REFRESH_TOKEN
 })
 
 const accessToken = oauth2Client.getAccessToken();
@@ -20,10 +20,10 @@ const smtpTransport = nodemailer.createTransport({
     service:'gmail',
     auth:{
         type:'OAuth2',
-        user:'amolw211@gmail.com',
-        clientId:'794773632289-81mo09710nccseo74lui6op0o0k33nn3.apps.googleusercontent.com',
-        clientSecret:'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',
-        refreshToken:'1//04TS9_b6k0HFoCgYIARAAGAQSNwF-L9IrxrA7BeiLBGjN89MXfdd4IrgT2z7BZnysx-Eu0H41H7CoifXWXjCW0pc0mAXGGMbmGvk',
+        user:process.env.FROM_EMAIL,
+        clientId:process.env.CLIENT_ID,
+        clientSecret:process.env.CLIENT_SECRET,
+        refreshToken:process.env.REFRESH_TOKEN,
         accessToken
     },
     tls:{
